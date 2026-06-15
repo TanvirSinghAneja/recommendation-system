@@ -49,18 +49,18 @@ same_con=[col for col in con_common.columns if col.lower()==book.lower()]
 
 st.subheader("Popular Books")
 
-cols=st.columns(5)
-for i,col in enumerate(cols):
-    with col:
-        st.image(popular_books.iloc[i]['Image-URL-L'])
-        st.caption(popular_books.iloc[i]['Book-Title'])
-        st.write(popular_books.iloc[i]['Book-Author'])
-cols=st.columns(5)
-for i,col in enumerate(cols):
-    with col:
-        st.image(popular_books.iloc[i+5]['Image-URL-L'])
-        st.caption(popular_books.iloc[i+5]['Book-Title'])
-        st.write(popular_books.iloc[i+5]['Book-Author'])
+# cols=st.columns(5)
+# for i,col in enumerate(cols):
+#     with col:
+#         st.image(popular_books.iloc[i]['Image-URL-L'])
+#         st.caption(popular_books.iloc[i]['Book-Title'])
+#         st.write(popular_books.iloc[i]['Book-Author'])
+# cols=st.columns(5)
+# for i,col in enumerate(cols):
+#     with col:
+#         st.image(popular_books.iloc[i+5]['Image-URL-L'])
+#         st.caption(popular_books.iloc[i+5]['Book-Title'])
+#         st.write(popular_books.iloc[i+5]['Book-Author'])
 
 st.write(popular_books[['Book-Title','Image-URL-L']])
 
