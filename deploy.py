@@ -60,7 +60,7 @@ for i in range(0,10,5):
 
     for col, (_, row) in zip(cols, popular_books.iloc[i:i+5].iterrows()):
         with col:
-           img_url = row['Image-URL-L']
+            img_url = row['Image-URL-L']
 
             if pd.notna(img_url):
                 st.image(img_url, use_container_width=True)
