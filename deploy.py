@@ -19,7 +19,7 @@ m=all_cnt/uniq_cnt
 W=(((v*R)+(C*m))/(v+m)).sort_values(ascending=False).reset_index().head(10)
 
 book_info=reviewed_book[['Book-Title','Book-Author','Image-URL-L']].drop_duplicates(subset='Book-Title')
-popular_books=(W.merge(book_info,on=['Book-Title','Book-Author'],how='left').dropna(subset=['Image-URL-L']).reset_index(drop=True).head(5))
+popular_books=(W.merge(book_info,on=['Book-Title','Book-Author'],how='left').dropna(subset=['Image-URL-L']).reset_index(drop=True).head(20))
 
 data=reviewed_book.copy()
 # Cosine Similairity Collaborative
@@ -50,8 +50,8 @@ if st.button('Recommend'):
     same_con=[col for col in con_common.columns if col.lower()==book.lower()]
     if same_cs and same_con:
         hybrid=(0.5*cos_common[same_cs[0]]+0.5*con_common[same_con[0]])
-        recommend_book=(hybrid.sort_values(ascending=False).reset_index().rename(columns={'index':'Book-Title'}).merge(book_info,on='Book-Title',how='left').dropna(subset=['Image-URL-L']).iloc[1:6])
-        st.write(recommend_book['Book-Author'][0])
+        recommend_book=(hybrid.sort_values(ascending=False).reset_index().rename(columns={'index':'Book-Title'}).merge(book_info,on='Book-Title',how='left').dropna(subset=['Image-URL-L']).iloc[1:21])
+        st.write([book_info['Book-Title']==book]['Book-Author'])
         st.subheader("Recommended Books")
         cols=st.columns(5)
         for i,col in enumerate(cols):
