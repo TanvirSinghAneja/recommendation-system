@@ -43,52 +43,31 @@ con_common=content_df.loc[common_book,common_book]
 
 st.title('Book Recommendation System')
 
-book = st.selectbox('Select a book ....',options=sorted(reviewed_book['Book-Title'].unique()),index=None,placeholder='Type or select a book')
+book=st.selectbox('Select a book ....',options=sorted(reviewed_book['Book-Title'].unique()),index=None,placeholder='Type or select a book')
 
 if st.button('Recommend'):
-
-    same_cs = [col for col in cos_common.columns if col.lower() == book.lower()]
-    same_con = [col for col in con_common.columns if col.lower() == book.lower()]
-
+    same_cs=[col for col in cos_common.columns if col.lower()==book.lower()]
+    same_con=[col for col in con_common.columns if col.lower()==book.lower()]
     if same_cs and same_con:
-
-        hybrid = (
-            0.5 * cos_common[same_cs[0]]
-            + 0.5 * con_common[same_con[0]]
-        )
-
-        recommend_book = (
-            hybrid.sort_values(ascending=False)
-            .reset_index()
-            .rename(columns={'index':'Book-Title'})
-            .merge(book_info, on='Book-Title', how='left')
-            .dropna(subset=['Image-URL-L'])
-            .iloc[1:6]
-        )
-
+        hybrid=(0.5*cos_common[same_cs[0]]+0.5*con_common[same_con[0]])
+        recommend_book=(hybrid.sort_values(ascending=False).reset_index().rename(columns={'index':'Book-Title'}).merge(book_info,on='Book-Title',how='left').dropna(subset=['Image-URL-L']).iloc[1:6])
+        st.write(recommend_book['Book-Author'][0])
         st.subheader("Recommended Books")
-
-        cols = st.columns(5)
-
-        for i, col in enumerate(cols):
+        cols=st.columns(5)
+        for i,col in enumerate(cols):
             with col:
-                row = recommend_book.iloc[i]
-                st.image(row['Image-URL-L'], use_container_width=True)
+                row=recommend_book.iloc[i]
+                st.image(row['Image-URL-L'],use_container_width=True)
                 st.caption(row['Book-Title'])
                 st.write(row['Book-Author'])
-
     else:
         st.error('Book not found')
-
 else:
-
     st.subheader("Popular Books")
-
-    cols = st.columns(5)
-
-    for i, col in enumerate(cols):
+    cols=st.columns(5)
+    for i,col in enumerate(cols):
         with col:
-            row = popular_books.iloc[i]
-            st.image(row['Image-URL-L'], use_container_width=True)
+            row=popular_books.iloc[i]
+            st.image(row['Image-URL-L'],use_container_width=True)
             st.caption(row['Book-Title'])
             st.write(row['Book-Author'])
