@@ -18,14 +18,8 @@ m=all_cnt/uniq_cnt
 
 W=(((v*R)+(C*m))/(v+m)).sort_values(ascending=False).reset_index().head(10)
 
-book_info = reviewed_book[
-    ['Book-Title','Book-Author','Image-URL-L']
-].drop_duplicates(subset='Book-Title')
-popular_books = W.merge(
-    book_info,
-    on=['Book-Title','Book-Author'],
-    how='left'
-)
+book_info=reviewed_book[['Book-Title','Book-Author','Image-URL-L']].drop_duplicates(subset='Book-Title')
+popular_books = W.merge(book_info,on=['Book-Title','Book-Author'],how='left')
 
 data=reviewed_book.copy()
 # Cosine Similairity Collaborative
@@ -53,19 +47,22 @@ st.write(book)
 same_cs=[col for col in cos_common.columns if col.lower()==book.lower()]
 same_con=[col for col in con_common.columns if col.lower()==book.lower()]
 
-st.subheader("🔥 Popular Books")
+st.subheader("Popular Books")
 
-for i in range(0,10,5):
-    cols = st.columns(5)
+cols=st.columns(5)
+for i,col in enumerate(cols):
+    with col:
+        st.image(popular_books.iloc[i]['Image-URL-L'])
+        st.caption(popular_books.iloc[i]['Book-Title'])
+        st.write(popular_books.iloc[i]['Book-Author'])
+cols=st.columns(5)
+for i,col in enumerate(cols):
+    with col:
+        st.image(popular_books.iloc[i+5]['Image-URL-L'])
+        st.caption(popular_books.iloc[i+5]['Book-Title'])
+        st.write(popular_books.iloc[i+5]['Book-Author'])
 
-    for col, (_, row) in zip(cols, popular_books.iloc[i:i+5].iterrows()):
-        with col:
-            img_url = row['Image-URL-L']
-
-            if pd.notna(img_url):
-                st.image(img_url, use_container_width=True)
-            st.caption(row['Book-Title'])
-            st.write(row['Book-Author'])
+st.write(popular_books[['Book-Title','Image-URL-L']])
 
 if same_cs and same_con:
   hybrid=(0.5*cos_common[same_cs[0]])+(0.5*con_common[same_con[0]])
