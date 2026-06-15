@@ -44,7 +44,6 @@ con_common=content_df.loc[common_book,common_book]
 st.title('Book Recommendation System')
 
 book=st.selectbox('Select a book ....',options=sorted(reviewed_book['Book-Title'].unique()),index=None,placeholder='Type or select a book')
-
 if st.button('Recommend') and book:
     same_cs=[col for col in cos_common.columns if col.lower()==book.lower()]
     same_con=[col for col in con_common.columns if col.lower()==book.lower()]
@@ -60,11 +59,12 @@ if st.button('Recommend') and book:
         for i in range(10):
             cols=st.columns(5)
             for j,col in enumerate(cols):
-                with col:
-                    row=recommend_book.iloc[i*5+j]
-                    st.image(row['Image-URL-L'],use_container_width=True)
-                    st.caption(row['Book-Title'])
-                    st.write(row['Book-Author'])
+                if i*5+j<len(recommend_book):
+                    with col:
+                        row=recommend_book.iloc[i*5+j]
+                        st.image(row['Image-URL-L'],use_container_width=True)
+                        st.caption(row['Book-Title'])
+                        st.write(row['Book-Author'])
     else:
         st.error('Book not found')
 
@@ -76,13 +76,12 @@ else:
     for i in range(10):
         cols=st.columns(5)
         for j,col in enumerate(cols):
-            with col:
-                row=popular_books.iloc[i*5+j]
-                st.image(row['Image-URL-L'],use_container_width=True)
-                st.caption(row['Book-Title'])
-                st.write(row['Book-Author'])
-
-
+            if i*5+j<len(popular_books):
+                with col:
+                    row=popular_books.iloc[i*5+j]
+                    st.image(row['Image-URL-L'],use_container_width=True)
+                    st.caption(row['Book-Title'])
+                    st.write(row['Book-Author'])
 # if st.button('Recommend') and book:
 #     same_cs=[col for col in cos_common.columns if col.lower()==book.lower()]
 #     same_con=[col for col in con_common.columns if col.lower()==book.lower()]
