@@ -43,7 +43,7 @@ con_common=content_df.loc[common_book,common_book]
 
 st.title('Book Recommendation System')
 
-book = st.selectbox('Select a book ....',options=sorted(reviewed_book['Book-Title'].unique())index=None,placeholder='Type or select a book')
+book = st.selectbox('Select a book ....',options=sorted(reviewed_book['Book-Title'].unique()),index=None,placeholder='Type or select a book')
 
 if st.button('Recommend'):
 
