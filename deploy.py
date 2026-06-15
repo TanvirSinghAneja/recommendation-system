@@ -48,27 +48,65 @@ book=st.selectbox('Select a book ....',options=sorted(reviewed_book['Book-Title'
 if st.button('Recommend') and book:
     same_cs=[col for col in cos_common.columns if col.lower()==book.lower()]
     same_con=[col for col in con_common.columns if col.lower()==book.lower()]
+    
     if same_cs and same_con:
         hybrid=(0.5*cos_common[same_cs[0]]+0.5*con_common[same_con[0]])
-        recommend_book=(hybrid.sort_values(ascending=False).reset_index().rename(columns={'index':'Book-Title'}).merge(book_info,on='Book-Title',how='left').dropna(subset=['Image-URL-L']).iloc[1:21])
-        author=book_info.loc[book_info['Book-Title']==book,'Book-Author'].iloc[0] 
+        recommend_book=(hybrid.sort_values(ascending=False).reset_index().rename(columns={'index':'Book-Title'}).merge(book_info,on='Book-Title',how='left').dropna(subset=['Image-URL-L']).iloc[1:51])
+
+        author=book_info.loc[book_info['Book-Title']==book,'Book-Author'].iloc[0]
         st.write(f"Written by {author}")
         st.subheader("Recommended Books")
+
+        for i in range(10):
+            cols=st.columns(5)
+            for j,col in enumerate(cols):
+                with col:
+                    row=recommend_book.iloc[i*5+j]
+                    st.image(row['Image-URL-L'],use_container_width=True)
+                    st.caption(row['Book-Title'])
+                    st.write(row['Book-Author'])
+    else:
+        st.error('Book not found')
+
+else:
+    st.subheader("Popular Books")
+
+    popular_books=(W.merge(book_info,on=['Book-Title','Book-Author'],how='left').dropna(subset=['Image-URL-L']).reset_index(drop=True).head(50))
+
+    for i in range(10):
         cols=st.columns(5)
-        for i,col in enumerate(cols):
+        for j,col in enumerate(cols):
             with col:
-                row=recommend_book.iloc[i]
+                row=popular_books.iloc[i*5+j]
                 st.image(row['Image-URL-L'],use_container_width=True)
                 st.caption(row['Book-Title'])
                 st.write(row['Book-Author'])
-    else:
-        st.error('Book not found')
-else:
-    st.subheader("Popular Books")
-    cols=st.columns(5)
-    for i,col in enumerate(cols):
-        with col:
-            row=popular_books.iloc[i]
-            st.image(row['Image-URL-L'],use_container_width=True)
-            st.caption(row['Book-Title'])
-            st.write(row['Book-Author'])
+
+
+# if st.button('Recommend') and book:
+#     same_cs=[col for col in cos_common.columns if col.lower()==book.lower()]
+#     same_con=[col for col in con_common.columns if col.lower()==book.lower()]
+#     if same_cs and same_con:
+#         hybrid=(0.5*cos_common[same_cs[0]]+0.5*con_common[same_con[0]])
+#         recommend_book=(hybrid.sort_values(ascending=False).reset_index().rename(columns={'index':'Book-Title'}).merge(book_info,on='Book-Title',how='left').dropna(subset=['Image-URL-L']).iloc[1:21])
+#         author=book_info.loc[book_info['Book-Title']==book,'Book-Author'].iloc[0] 
+#         st.write(f"Written by {author}")
+#         st.subheader("Recommended Books")
+#         cols=st.columns(5)
+#         for i,col in enumerate(cols):
+#             with col:
+#                 row=recommend_book.iloc[i]
+#                 st.image(row['Image-URL-L'],use_container_width=True)
+#                 st.caption(row['Book-Title'])
+#                 st.write(row['Book-Author'])
+#     else:
+#         st.error('Book not found')
+# else:
+#     st.subheader("Popular Books")
+#     cols=st.columns(5)
+#     for i,col in enumerate(cols):
+#         with col:
+#             row=popular_books.iloc[i]
+#             st.image(row['Image-URL-L'],use_container_width=True)
+#             st.caption(row['Book-Title'])
+#             st.write(row['Book-Author'])
