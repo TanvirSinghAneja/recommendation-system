@@ -17,7 +17,15 @@ uniq_cnt=len(popular['Book-Title'].unique())
 m=all_cnt/uniq_cnt
 
 W=(((v*R)+(C*m))/(v+m)).sort_values(ascending=False).reset_index().head(10)
-W.head()
+
+book_info = reviewed_book[
+    ['Book-Title','Book-Author','Image-URL-L']
+].drop_duplicates(subset='Book-Title')
+popular_books = W.merge(
+    book_info,
+    on=['Book-Title','Book-Author'],
+    how='left'
+)
 
 data=reviewed_book.copy()
 # Cosine Similairity Collaborative
@@ -50,7 +58,7 @@ st.subheader("🔥 Popular Books")
 for i in range(0,10,5):
     cols = st.columns(5)
 
-    for col, (_, row) in zip(cols, W.iloc[i:i+5].iterrows()):
+    for col, (_, row) in zip(cols, popular_books.iloc[i:i+5].iterrows()):
         with col:
             st.image(row['Image-URL-L'], use_container_width=True)
             st.caption(row['Book-Title'])
