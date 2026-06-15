@@ -19,7 +19,7 @@ m=all_cnt/uniq_cnt
 W=(((v*R)+(C*m))/(v+m)).sort_values(ascending=False).reset_index().head(10)
 
 book_info=reviewed_book[['Book-Title','Book-Author','Image-URL-L']].drop_duplicates(subset='Book-Title')
-popular_books=(W.merge(book_info,on=['Book-Title','Book-Author'],how='left').dropna(subset=['Image-URL-L']).reset_index(drop=True).head(20))
+popular_books=(W.merge(book_info,on=['Book-Title','Book-Author'],how='left').dropna(subset=['Image-URL-L']).reset_index(drop=True).head(50))
 
 data=reviewed_book.copy()
 # Cosine Similairity Collaborative
