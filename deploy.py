@@ -44,7 +44,7 @@ con_common=content_df.loc[common_book,common_book]
 
 st.title('Book Recommendation System')
 book=st.selectbox('Select a book ....',options=sorted(reviewed_book['Book-Title'].unique()))
-st.write(book)
+
 same_cs=[col for col in cos_common.columns if col.lower()==book.lower()]
 same_con=[col for col in con_common.columns if col.lower()==book.lower()]
 
@@ -57,10 +57,10 @@ for i,col in enumerate(cols):
         st.caption(popular_books.iloc[i]['Book-Title'])
         st.write(popular_books.iloc[i]['Book-Author'])
 
-st.write(popular_books[['Book-Title','Image-URL-L']])
-
-if same_cs and same_con:
-  hybrid=(0.5*cos_common[same_cs[0]])+(0.5*con_common[same_con[0]])
-  st.dataframe(hybrid.sort_values(ascending=False)[1:6])
-else:
-  print('Book not Found')
+but=st.button('Recommend')
+if but:
+    if same_cs and same_con:
+      hybrid=(0.5*cos_common[same_cs[0]])+(0.5*con_common[same_con[0]])
+      st.dataframe(hybrid.sort_values(ascending=False)[1:6])
+    else:
+      print('Book not Found')
