@@ -71,7 +71,7 @@ if st.button('Recommend') and book:
 else:
     st.subheader("Popular Books")
 
-    popular_books=(W.merge(book_info,on=['Book-Title','Book-Author'],how='left').dropna(subset=['Image-URL-L']).reset_index(drop=True).head(50))
+    popular_books=(W.merge(book_info,on=['Book-Title','Book-Author'],how='left').dropna(subset=['Image-URL-L']).reset_index(drop=True))
 
     for i in range(10):
         cols=st.columns(5)
