@@ -51,7 +51,7 @@ if st.button('Recommend') and book:
     if same_cs and same_con:
         hybrid=(0.5*cos_common[same_cs[0]]+0.5*con_common[same_con[0]])
         recommend_book=(hybrid.sort_values(ascending=False).reset_index().rename(columns={'index':'Book-Title'}).merge(book_info,on='Book-Title',how='left').dropna(subset=['Image-URL-L']).iloc[1:21])
-        author=book_info.loc[ook_info['Book-Title']==book,'Book-Author'.iloc[0] 
+        author=book_info.loc[book_info['Book-Title']==book,'Book-Author'.iloc[0] 
         st.write(f"Written by {author}")
         st.subheader("Recommended Books")
         cols=st.columns(5)
